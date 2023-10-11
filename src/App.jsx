@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import "./App.css";
 // import { notes } from "./data";
 function App() {
-  console.log("Render");
   const [input, setInput] = useState("");
   const [notes, setNotes] = useState(() => {
     const storedNotes = getNotesFromLocalStorage();
@@ -19,6 +18,11 @@ function App() {
     }
   };
 
+  const pressEnterKey = (event) => {
+    if (event.key === "Enter") {
+      addOrUpdateNote();
+    }
+  };
   const editNote = (e, i) => {
     // e.note = "";
     setInput(e.note);
@@ -99,6 +103,7 @@ function App() {
             type="text"
             onChange={(e) => setInput(e.target.value)}
             value={input}
+            onKeyDown={pressEnterKey}
           />
           <button type="button" onClick={addOrUpdateNote}>
             add note
