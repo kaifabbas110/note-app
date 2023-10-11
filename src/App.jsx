@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./App.css";
 // import { notes } from "./data";
 function App() {
@@ -7,9 +7,9 @@ function App() {
     const storedNotes = getNotesFromLocalStorage();
     return storedNotes.length > 0 ? storedNotes : [];
   });
-
   const [editIndex, setEditIndex] = useState(null);
   const [editModal, setEditModal] = useState(false);
+  const myRef = useRef();
 
   const addOrUpdateNote = () => {
     if (input) {
@@ -21,6 +21,7 @@ function App() {
   const pressEnterKey = (event) => {
     if (event.key === "Enter") {
       addOrUpdateNote();
+      myRef.current.blur();
     }
   };
   const editNote = (e, i) => {
@@ -69,6 +70,7 @@ function App() {
   useEffect(() => {
     const storedNotes = getNotesFromLocalStorage();
     setNotes(storedNotes);
+    myRef.current.focus();
   }, []);
 
   useEffect(() => {
@@ -104,6 +106,7 @@ function App() {
             onChange={(e) => setInput(e.target.value)}
             value={input}
             onKeyDown={pressEnterKey}
+            ref={myRef}
           />
           <button type="button" onClick={addOrUpdateNote}>
             add note
